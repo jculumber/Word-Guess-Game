@@ -1,60 +1,85 @@
 //Values at the beginning of a new game
 var wins = 0;               //Number of times the player has correctly guessed the word
-var currentWord;       //Current game word trying to be guessed
-var remainingGuesses = 0;  //Number of chances the player has to figure out word
-var lettersGuessed = [];    //letters player has guessed incorrectly
+var currentWord;            //Current game word trying to be guessed
+var remainingGuesses = 20;  //Number of chances the player has to figure out word
+var lettersGuessed = [];    //Empty array for guessed letters
 var guessingWord = [];      //Combination of "_" and letters player has guessed to build word
+var playerGuess;            //Key pressed by player
+var currentWordLetters;     //Letters in currentWord
 
 //List of possible words to be used for a game
-var gameWords = ["Magic Kingdom", "EPCOT", "Hollywood Studios", "Animal Kingdom", "Mickey Mouse", "Donald Duck", "Fireworks"]; 
+var gameWords = ["magickingdom", "epcot", "hollywoodstudios", "animalkingdom", "mickeymouse", "donaldduck", "fireworks"]; 
 
-//This function is run whenever the user presses a key
-document.onkeyup = function(event) {
+//When page loads, set wins to 0 and remaining guesses to 10:
+    function pageLoad() {
+        document.getElementById("winsTotal").innerHTML = wins; 
+    };    
+
+//Start a new game
+    function newGame() {
+        //Set Remaining Guesses = 20
+        document.getElementById("remainingGuesses").innerHTML = remainingGuesses;
     
-    // Determines which key was pressed.
-    var playerGuess = event.key;
+        //Generate the current word
+        currentWord = gameWords[Math.floor(Math.random() * gameWords.length)];
+        currentWordLetters = [currentWord.split("")];
 
-//displays number of wins
-document.getElementById("winsTotal").innerHTML = wins;
-
-//Chooses the word for the current game
-currentWord = gameWords[Math.floor(Math.random() * gameWords.length) + 1];
-
-//Shows " _ " for current game word
-for (var i = 0; i < currentWord.length; i++) {
-guessingWord.push(" _ ");
-};
-document.getElementById("currentWord").innerText = "";
-for (var j = 0; j < guessingWord.length; j++) {
-document.getElementById("currentWord").innerText += guessingWord[j];
-};
-
-//Shows how many guesses the player has left
-document.getElementById("remainingGuesses").innerHTML += remainingGuesses;
-
-
-//Adds playerGuess to the lettersGuessed array
-lettersGuessed.push(" " + playerGuess);        
-document.getElementById("lettersGuessed").innerHTML = lettersGuessed;
-    
-    
-//conditional that tells what to do when a key is pressed:
-    //if key pressed is in word, replace " _ " in current word with correct letter
-    if (playerGuess === currentWord.charAt()) {
-        document.getElementById("lettersGuessed").innerHTML = guessingWord.push("playerGuess");
+        //Represent currentWord using " _ "
+        for (i = 0; i < currentWord.length; i++) {
+        guessingWord.push(" _ ");
+        };
+        document.getElementById("currentWord").innerText = "";
+        for (j = 0; j < guessingWord.length; j++) {
+        document.getElementById("currentWord").innerText += guessingWord[j];
+        };
     };
-    //if key pressed is not in word, add letter to lettersGuessed array and decrement remainingGuesses
-
-    //if key pressed has already been guessed, do nothing
-
-    //if key pressed is not a letter, do nothing
-
-//conditional that tells what to do if remainingGuesses = 0:
-    //Tells the player that their game is over
-
-//conditional that tells what to do when the entire word has been guessed:
-    //Tells the player if they've won
+ 
+//This function is run whenever the user presses a key
+    document.onkeyup = function(event) {
     
-};
+        // Determines which key was pressed, and makes any letter lower case
+        playerGuess = event.key.toLowerCase();
 
-//Restarts a new game
+        //Check to see if letter has already been guessed
+        //If yes - do nothing
+    
+        //If no - add letter to guessed letters array
+        if ((remainingGuesses - lettersGuessed.length) > 0 && (lettersGuessed.indexOf(playerGuess) == -1)) {
+            lettersGuessed.push(" " + playerGuess);        
+            document.getElementById("lettersGuessed").innerHTML = lettersGuessed.join(" ");
+        
+        //Check to see if letter is in word
+        //If yes - replace dash with letter in the appropriate position
+        for (k = 0; k < currentWord.length; k++) {
+            if (currentWord[k] == playerGuess) {
+                guessingWord[k] = " " + playerGuess + " ";
+                document.getElementById("currentWord").textContent = guessingWord.join("");
+            }
+        //If no - decrement Number of Guesses by 1
+            else {
+                document.getElementById("remainingGuesses").innerHTML = remainingGuesses- lettersGuessed.length;
+            }
+        };
+        };
+        //When Remaining Guesses = 0, tell player Game Over, and restart game when next key is pressed
+        if ((remainingGuesses - lettersGuessed.length) == 0) {
+            alert("Game Over! Press 'New Game' button to start a new game.");
+            lettersGuessed = [];    //Empty array for guessed letters
+            document.getElementById("lettersGuessed").innerHTML = lettersGuessed.join(" ");
+            guessingWord = [];      //Combination of "_" and letters player has guessed to build word
+            document.getElementById("remainingGuesses").innerHTML = remainingGuesses;
+            newGame();
+        };
+    
+        //If all letters in the current word are guessed and Remaining Guesses > 1, tell player they win, and restart game when next key is pressed
+        if (guessingWord.indexOf(" _ ") == -1) {
+            alert("You win! Great job! Press 'New Game' button to start a new game.");
+            wins++;
+        };
+
+    };
+
+//Begin
+    window.onload = pageLoad();
+//Reset game
+    
