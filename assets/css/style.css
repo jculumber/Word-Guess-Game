@@ -1,0 +1,48 @@
+#hangmanTitle {
+    font-family: cursive;
+    font-size:70px;
+    font-weight:bolder;
+    color: red;
+}
+/* Extra small devices (portrait phones, less than 576px)
+No media query for `xs` since this is the default in Bootstrap*/
+
+/* Small devices (landscape phones, 576px and up)*/
+@media screen and (min-width: 320px) { 
+    #hangmanTitle {
+        font-size: 130%;
+    }
+ }
+
+@media screen and (min-width: 415px) { 
+   #hangmanTitle {
+       font-size: 200%;
+   }
+}
+
+@media screen and (min-width: 576px) { 
+    #hangmanTitle {
+        font-size: 200%;
+    }
+ }
+
+/* Medium devices (tablets, 768px and up)*/
+@media screen and (min-width: 580px){
+    #hangmanTitle {
+        font-size: 265%;
+    }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 960px) {
+    #hangmanTitle {
+        font-size: 300%;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+    #hangmanTitle {
+        font-size: 450%;
+    }
+}
