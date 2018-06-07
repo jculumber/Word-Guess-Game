@@ -74,6 +74,7 @@ document.onkeyup = function (event) {
         document.getElementById("currentWord").innerHTML = guessingWord.join("");
         alert("You win! Great job! Press 'New Game' button to start a new game.");
         wins++;
+        document.getElementById("winsTotal").innerHTML = wins;
     };
 
 };
