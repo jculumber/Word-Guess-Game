@@ -41,40 +41,44 @@ document.onkeyup = function (event) {
 
     // Determines which key was pressed, and makes any letter lower case
     playerGuess = event.key.toLowerCase();
-
+    checkLetters();
+    setTimeout(WinOrLose, 500);
+};
     //Check to see if letter has already been guessed
     //If yes - do nothing
+    function checkLetters() {
+        //If no - add letter to guessed letters array
+        if ((remainingGuesses - lettersGuessed.length) > 0 && (lettersGuessed.indexOf(playerGuess) == -1)) {
+            lettersGuessed.push(" " + playerGuess);
+            document.getElementById("lettersGuessed").innerHTML = lettersGuessed.join(" ");
 
-    //If no - add letter to guessed letters array
-    if ((remainingGuesses - lettersGuessed.length) > 0 && (lettersGuessed.indexOf(playerGuess) == -1)) {
-        lettersGuessed.push(" " + playerGuess);
-        document.getElementById("lettersGuessed").innerHTML = lettersGuessed.join(" ");
-
-        //Check to see if letter is in word
-        //If yes - replace dash with letter in the appropriate position
-        for (k = 0; k < currentWord.length; k++) {
-            if (currentWord[k] == playerGuess) {
-                guessingWord[k] = " " + playerGuess + " ";
-                document.getElementById("currentWord").textContent = guessingWord.join("");
-            }
-            //If no - decrement Number of Guesses by 1
-            else {
-                document.getElementById("remainingGuesses").innerHTML = remainingGuesses - lettersGuessed.length;
-            }
+            //Check to see if letter is in word
+            //If yes - replace dash with letter in the appropriate position
+            for (k = 0; k < currentWord.length; k++) {
+                if (currentWord[k] == playerGuess) {
+                    guessingWord[k] = " " + playerGuess + " ";
+                    document.getElementById("currentWord").textContent = guessingWord.join("");
+                }
+                //If no - decrement Number of Guesses by 1
+                else {
+                    document.getElementById("remainingGuesses").innerHTML = remainingGuesses - lettersGuessed.length;
+                }
+            };
         };
     };
-    //When Remaining Guesses = 0, tell player Game Over, and restart game when next key is pressed
-    if ((remainingGuesses - lettersGuessed.length) === 0) {
-        alert("Game Over! Press 'New Game' button to start a new game.");
-        newGame();
+    function WinOrLose() {
+        //When Remaining Guesses = 0, tell player Game Over, and restart game when next key is pressed
+        if ((remainingGuesses - lettersGuessed.length) === 0) {
+            alert("Game Over! Press 'New Game' button to start a new game.");
+            newGame();
+        };
+
+        //If all letters in the current word are guessed and Remaining Guesses > 1, tell player they win, and restart game when next key is pressed
+        if (guessingWord.indexOf(" _ ") == -1) {
+            document.getElementById("currentWord").innerHTML = guessingWord.join("");
+            alert("You win! Great job! Press 'New Game' button to start a new game.");
+            wins++;
+            document.getElementById("winsTotal").innerHTML = wins;
+        };
     };
 
-    //If all letters in the current word are guessed and Remaining Guesses > 1, tell player they win, and restart game when next key is pressed
-    if (guessingWord.indexOf(" _ ") == -1) {
-        document.getElementById("currentWord").innerHTML = guessingWord.join("");
-        alert("You win! Great job! Press 'New Game' button to start a new game.");
-        wins++;
-        document.getElementById("winsTotal").innerHTML = wins;
-    };
-
-};
